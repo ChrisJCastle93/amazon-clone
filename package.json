@@ -6,7 +6,10 @@
     "start": "nodemon --watch backend --exec babel-node backend/server.js",
     "build": "rm -rf dest && babel backend -d dist",
     "serve": "node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-prebuild": "cd frontend && npm install --dev",
+    "heroku-postbuild": "npm run build && cd frontend && npm install && npm run build"
+
   },
   "author": "",
   "license": "ISC",
@@ -34,5 +37,10 @@
     "nodemon": "^2.0.4"
   },
   "description": "",
-  "type": "module"
+  "type": "module",
+  "engines": {
+    "node": "12.4.0",
+    "npm": "6.9.0"
+  }
+
 }

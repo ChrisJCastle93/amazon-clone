@@ -154,3 +154,8 @@ In the API file we get the user info using the id and the token, and the info th
 - Add in get routes for orders, and delte routes
 - Update api with functions for get and delete orders 
 - create UI for listing orders
+- Do all of the above for deliveries
+
+// DASHBOARDS
+
+- 
