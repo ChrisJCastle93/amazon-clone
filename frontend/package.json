@@ -30,6 +30,7 @@
     "bytes": "^3.0.0",
     "call-bind": "^1.0.2",
     "caniuse-lite": "^1.0.30001292",
+    "chartist": "^0.11.4",
     "chokidar": "^3.5.2",
     "chrome-trace-event": "^1.0.3",
     "clean-stack": "^2.2.0",

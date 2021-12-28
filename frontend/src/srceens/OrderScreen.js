@@ -168,9 +168,7 @@ const OrderScreen = {
                  <li><div class="fw" id="paypal-button"></div></li>
                  <li>               
                  ${
-                  isPaid && !isDelivered && isAdmin
-                    ? `<button id="deliver-order-button" class="primary fw">Deliver Order</button>`
-                    : ''
+                  isPaid && !isDelivered && isAdmin ? `<button id="deliver-order-button" class="primary fw">Deliver Order</button>` : ''
                 }
                 <li>
         </div>
