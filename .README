@@ -1,0 +1,156 @@
+File Structure 
+
+This is a SPA, so the frame (header/footer) remains the same, and we simply change the innerHTML depending on what we want to show the user.
+
+// SETUP
+
+- Our SCREENS folder contains all of the pages we want to show the user. Eg homescreen. We simply import the data from the data.js file, create the HTML we want to show to the user, then export it for use elsewhere. 
+
+- HomeScreens file. Is like an object, and contains a method called `render` which is a function that returns the template literal for our HTML that will be rendered in the index.html Within the template literal, we do products.map to loop through the array of products and create HTML for each of them.
+
+- data.js is containing our product data. We simply export it, then import it into app.js. We use the syntax `export default { object }`. This object has the key 'products' and the value is an array of objects - the products.
+
+- app.js - we create our router function. We get the main container from within the HTML, then link it to the content we create in HomeScreen. We must import that module. We then add an event listener to load the HomeScreen.
+
+// URL Routers
+
+- In our app.js. create a routes object which has the URL path as a the key, and the name of the screen that we want to display. 
+
+- Create utils file that parses thr URL that we currently have in our browser and routes it to the right module to display customer
+
+// NODE JS SERVERS
+
+We install node and express and require them in our server file, per the express docs. 
+
+We access our data by requiring the data file, and then accessing the properties within it. 
+
+We must then use app.listen to get it going.
+
+Then, set in package.json and specify what running 'npm start' script will do in our terminal. We should run npm start on the frontend too, using live-server.
+
+Make rendering an async function in app.js and our screen files. We also need to install and require cors, to allow our API calls to go through successfully. Restart server.
+
+// Add  webpack. This combines all of our js files into one which makes apps faster in browsers. npm install -D webpack webpack-cli webpack-dev-server. Uninstall live-server. Change script from liveserver to webpack-dev-server --watch-content-base --open. 
+
+// npm install axios. change syntax in homescreen file - import, fetch, params, response.json
+
+// Installing babel. Install babel, set up babel file, change package.json to nodemon
+
+REVIEWS COMPONENT
+
+// Create section for components and file (ratings). New variable that's an object. Add render method that takes argument (a products properties) and does stuff with it. Import into screens. In screens, using Rating.render and pass in the arguments we need. In this case, we put the whole object we need as an argument, and then access the relevant key/values on the ratings page.
+
+// Products Screen
+
+In our api.js file, we create the getProduct function to call our API using the url we want (inc apiUrl and the product ids) and return the response.data.  
+
+Create config.js file in src with the apiURL. This gets imported into the api.js. Update product screens to be async and inserted template literal to style them.
+
+To set up the products screen, we crate another route in our server.js that customises per the product id. We match the req.params.id with the id of our product in our array of products, and send the product we've found as the response. In the product screen, we update the render method to use the getProduct function we created in api.js and return a template literal. 
+
+// Product Screen Action
+
+We add a method called after_render() to ProductScreen. After parseRequestUrl(), we add an e.listener to the add to cart button. When clikced, this will change the URL to be our cart, with the request id.
+
+// CREATING A CART
+
+- Create localstorage.js file with functions to get and set items in local storage that represent the cart. Make the cart routes, and import the cart screen in index.js. Create cartScreen file in screens folder, and add render method that takes a product that's been added to cart and runs function called addToCart that includes that product as a parameter. This product gets pushed into our cart array and we setCartItems in localStorage again. To display products in cart, we loop through them using map.
+
+// EDITING CART - rewatch this one.
+
+- add a rerender function in the utils file, call it in the cartScreen file. The rerender just forces the screen to render again, showcasing any updates to the CartScreen, in this case. If the product alreadt exists in our cart, if forceupdate is true, we _____.  // After we've set cart items, we rerender the CartScreen.
+
+- We create a removeFromCart function, with id as an argument. We filter all products that are not the product id we pass into the function, and that returns the rest of the items in the cart - the ones we want to remin in the cart.  If there's only one item in the cart, we render an empty cart (located at /cart). If not, then we rerender the cartScreen containing the items we wanted to keep.
+
+/// MONGO DB - watch this one.
+
+- Mongo Community - local; Mongo Atlas - Cloud
+- Setup Mongo variables in new backend config file
+- Install mongoose and dotenv
+- Create folder for our models, make file for userModels. In there, we import mongoose and define our userSchema using mongoose. We make a model out of the Schema, and export the User.
+
+- We then need to update our backend Express routers. We create a new folder for backend routers, and set up userRouters/ In this User Router we create new Users, and they get saved to the database. 
+
+Watch this video to setup MongoDB
+
+// USER AUTH ROUTE
+
+Install body-parser, express-async-handler, jsonwebtoken
+
+Create utils file in the backend which uses jwt authentification to check the user. Update config file.
+
+Update userRouter file and add a post route (at /signin url). We find the user in the database using the email and password the user entered. If it's not there, we sreturn an error message. If it is, we sent the users details to the frontend with a token.
+
+in the api file, we create a new function variable (signin) that receives the data from our signin form. In the signin form page, we add an event listener to the form. When submitted, we run that signin function and send a JSON with email/password. If successful, we set the user info in local storage. 
+
+Set up register post routes in userRouter, and set up registerScreen.js. In the api.js, we set up the register function.
+
+// AUTHORISATION
+
+Add in user routes to update the User's profile. As part of that, we need to check if the user is authorised. New function that does that by verifying the token with JWT.
+
+In the API file we get the user info using the id and the token, and the info that the user puts in the form is used to update the profile. This is a put route.
+
+// CHECKOUT SCREEN - COMPLICATED! 
+
+- Add HTML in CheckoutSteps.js
+- In PaymentScreen.js. Add event listener to checkout submit. Get the checked payment method, and set payment to be that payment method. Go to /placeorder.
+- 
+
+// SHIPPING SCREEN
+
+- Add html in shipping screen, event listener on submit and set shipping. getShipping is a method to get shipping info. setShipping inputs the shipping info. getPayment (paypal) gets the payment method, setPayment sets payment method.
+
+// PLACING ORDER
+
+- convertCartToOrder: Get items that are in the cart, get shipping information, get payment information, calculate price, return.
+- placeOrderScreen: shows the 'place order' screen.
+
+/ CREATING ORDER MODELS
+
+- Creating mongo model/schema for orders, which contains OrderItems, user, shipping, payment, price, payment status, payment date, delivered, delivery date, timestamps.
+- In the order router, we set up a post route. With authorisation, we create new Order with all of the above details. Then save it. 
+- Add that route to the server.js
+- In the API js file, we create a function to create the order, which returns the order. This gets invoked on the placeOrder screen. We also add the getOrder function here. 
+- In the orderScreen, this function gets invoked and gives us the data of a customers order. We then display this in templtae literal when we render the screen.
+- In the orderRouter, add the routes to post and get the orders - eg populating a customer's order list.
+
+// SETTING UP PAYPAL
+
+- Add paypal client ids to config file
+- Add update route to orderRouter to mark as paid 
+- Add Paypal to Server.js
+- Add functions (getPaypalClientId and payOrder) to api.js. These get the paypalid for that user, and then payOrder will mark the paymentResult as paid
+- In the orderScreen, we leverage the PaypalSDK. We add the SDK to 'handlePayment'. We get the clientID from the above function, run script from Paypal and pass in the price and the clientId. Then handlePayment.
+
+// DISPLAYING ORDERS HISTORY
+
+- Add a get route to the orderRouter to showcase the order history. We pass in the users id to get their orders.
+- In the api.js file we create a function called getMyOrders that uses the User's token to get their orders.
+- In the profile screen, we map their orders and display them.
+
+// ADDING AN ADMIN DASHBOARD
+
+- Create Dashboard Menu component that appears which which show info and charts
+- Update Nav Header
+- Set up routes in index.js
+- Set up actual dashboardscreen
+- in api file, set up getProducts function
+- set up productslist view in index.js.
+- UPdate homescreen with updated products
+- Add UI for listing all products
+- Set up product model in Mongo
+- Set up product Router to create new products
+- add createProduct to api file
+- create product list screen
+- Add in routes and UI to edit product
+- Add in Multer to be able to upload image as part of process. Add in routes and UI.
+- add app.uses into server file
+- add build scripts to frontend pkg and global package
+- add in routers, functions, and UI for delete product
+
+// LIST AND DELETE ORDERS
+
+- Add in get routes for orders, and delte routes
+- Update api with functions for get and delete orders 
+- create UI for listing orders
